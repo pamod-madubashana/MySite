@@ -24,24 +24,39 @@ export const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      // Debounce scroll handler to prevent jank
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 20);
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+    
+    // Also close mobile menu when route changes
+    setIsOpen(false);
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      initial={false}
+      animate={{ 
+        y: 0,
+        backgroundColor: scrolled ? "var(--glass-bg-strong)" : "transparent"
+      }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 200, 
+        damping: 25,
+        mass: 0.5
+      }}
+      className={`fixed top-0 left-0 right-0 z-50 ${
         scrolled
           ? "glass-strong shadow-lg"
           : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 navbar-container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="relative group">
@@ -54,24 +69,30 @@ export const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <Link
+              <motion.div
                 key={link.path}
-                to={link.path}
-                className={`relative px-4 py-2 text-sm font-medium transition-colors duration-200 ${
-                  location.pathname === link.path
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
+                className="relative"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                {link.name}
-                {location.pathname === link.path && (
-                  <motion.span
-                    layoutId="navbar-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  />
-                )}
-              </Link>
+                <Link
+                  to={link.path}
+                  className={`block px-4 py-2 text-sm font-medium transition-colors duration-200 ${
+                    location.pathname === link.path
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {link.name}
+                  {location.pathname === link.path && (
+                    <motion.span
+                      layoutId="navbar-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
             ))}
           </div>
 
@@ -108,31 +129,45 @@ export const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, height: 0, y: -20 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -20 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 300, 
+              damping: 30,
+              duration: 0.3 
+            }}
             className="md:hidden glass-strong border-t border-border"
           >
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col gap-2">
                 {navLinks.map((link) => (
-                  <Link
+                  <motion.div
                     key={link.path}
-                    to={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`px-4 py-3 rounded-lg font-medium transition-colors duration-200 ${
-                      location.pathname === link.path
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                    }`}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full"
                   >
+                    <Link
+                      to={link.path}
+                      onClick={() => {
+                        // Close menu with slight delay for better UX
+                        setTimeout(() => setIsOpen(false), 150);
+                      }}
+                      className={`block w-full px-4 py-3 rounded-lg font-medium transition-colors duration-200 ${
+                        location.pathname === link.path
+                          ? "bg-primary/10 text-primary"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      }`}
+                    >
                     {link.name}
                   </Link>
-                ))}
+                </motion.div>
+              ))}
                 <Button variant="default" className="mt-4 neon-glow">
                   Contact
                 </Button>

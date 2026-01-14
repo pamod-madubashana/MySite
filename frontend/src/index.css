@@ -131,18 +131,23 @@
     @apply bg-background text-foreground font-sans antialiased;
   }
 
-  html {
+  /* Removed global scroll-behavior: smooth to prevent navbar jumping */
+  /* html {
     scroll-behavior: smooth;
-  }
+  } */
 }
 
 @layer components {
   .glass {
     @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   .glass-strong {
     @apply bg-card/90 backdrop-blur-2xl border border-border/60;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   .neon-glow {
@@ -203,6 +208,13 @@
 }
 
 @layer utilities {
+  /* Prevent animation glitches on navbar */
+  .navbar-container {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-20px); }
