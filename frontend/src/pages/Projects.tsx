@@ -33,8 +33,17 @@ const Projects = () => {
   useEffect(() => {
     const fetchGithubRepos = async () => {
       try {
-        // Use the GitHub username from settings if available, otherwise use a default
-        const githubUsername = settings?.socialLinks.github?.split('/').pop() || 'octocat';
+        let githubUsername = 'octocat'; // default fallback
+        
+        // Try to get GitHub username from settings first
+        if (settings?.socialLinks.github) {
+          githubUsername = settings.socialLinks.github.split('/').pop() || githubUsername;
+        }
+        // Fallback to environment variable if settings don't have it
+        else if (import.meta.env.VITE_GITHUB_USERNAME) {
+          githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+        }
+        
         const repos = await githubApi.getRepos(githubUsername);
         setGithubRepos(repos);
       } catch (err: any) {

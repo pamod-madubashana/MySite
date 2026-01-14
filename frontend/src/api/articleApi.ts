@@ -36,7 +36,8 @@ export const articleApi = {
   getPublishedArticles: async (): Promise<{ articles: Article[] }> => {
     const response = await fetch('/api/articles');
     if (!response.ok) {
-      throw new Error(`Failed to fetch published articles: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch published articles: ${response.status} - ${errorText}`);
     }
     return response.json();
   },
@@ -48,7 +49,8 @@ export const articleApi = {
       }
     });
     if (!response.ok) {
-      throw new Error(`Failed to fetch all articles: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch all articles: ${response.status} - ${errorText}`);
     }
     return response.json();
   },
@@ -56,7 +58,8 @@ export const articleApi = {
   getArticleById: async (id: string): Promise<Article> => {
     const response = await fetch(`/api/articles/${id}`);
     if (!response.ok) {
-      throw new Error(`Failed to fetch article: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch article: ${response.status} - ${errorText}`);
     }
     return response.json();
   },
@@ -71,7 +74,8 @@ export const articleApi = {
       body: JSON.stringify(articleData)
     });
     if (!response.ok) {
-      throw new Error(`Failed to create article: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to create article: ${response.status} - ${errorText}`);
     }
     return response.json();
   },
@@ -86,7 +90,8 @@ export const articleApi = {
       body: JSON.stringify(articleData)
     });
     if (!response.ok) {
-      throw new Error(`Failed to update article: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to update article: ${response.status} - ${errorText}`);
     }
     return response.json();
   },
@@ -99,7 +104,8 @@ export const articleApi = {
       }
     });
     if (!response.ok) {
-      throw new Error(`Failed to delete article: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to delete article: ${response.status} - ${errorText}`);
     }
     return response.json();
   }

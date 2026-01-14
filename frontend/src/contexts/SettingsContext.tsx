@@ -55,7 +55,8 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
       const response = await fetch('/api/settings');
       
       if (!response.ok) {
-        throw new Error('Failed to fetch settings');
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch settings: ${response.status} - ${errorText}`);
       }
       
       const data = await response.json();
