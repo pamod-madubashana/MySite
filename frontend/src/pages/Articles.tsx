@@ -1,66 +1,12 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Calendar, Clock, ArrowRight, Tag } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Tag, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { articleApi, Article } from "@/api/articleApi";
 
-const articles = [
-  {
-    id: 1,
-    slug: "building-scalable-react-apps",
-    title: "Building Scalable React Applications: A Complete Guide",
-    excerpt: "Learn the architectural patterns and best practices for building React applications that can grow with your team and user base.",
-    date: "2024-01-15",
-    readTime: "12 min",
-    tags: ["React", "Architecture", "TypeScript"],
-    image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=600&fit=crop",
-    featured: true,
-  },
-  {
-    id: 2,
-    slug: "mastering-typescript-generics",
-    title: "Mastering TypeScript Generics for Better Code",
-    excerpt: "Deep dive into TypeScript generics and how to use them to write more flexible, reusable, and type-safe code.",
-    date: "2024-01-08",
-    readTime: "8 min",
-    tags: ["TypeScript", "JavaScript", "Tutorial"],
-    image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800&h=600&fit=crop",
-    featured: false,
-  },
-  {
-    id: 3,
-    slug: "modern-css-techniques",
-    title: "Modern CSS Techniques You Should Know in 2024",
-    excerpt: "Explore the latest CSS features like container queries, cascade layers, and subgrid that are changing how we style web applications.",
-    date: "2024-01-02",
-    readTime: "10 min",
-    tags: ["CSS", "Design", "Frontend"],
-    image: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=800&h=600&fit=crop",
-    featured: true,
-  },
-  {
-    id: 4,
-    slug: "api-design-best-practices",
-    title: "REST API Design Best Practices",
-    excerpt: "A comprehensive guide to designing RESTful APIs that are intuitive, scalable, and maintainable.",
-    date: "2023-12-20",
-    readTime: "15 min",
-    tags: ["API", "Backend", "Node.js"],
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop",
-    featured: false,
-  },
-  {
-    id: 5,
-    slug: "database-optimization-tips",
-    title: "Database Optimization Tips for Better Performance",
-    excerpt: "Learn how to optimize your database queries and schema design for maximum performance in production applications.",
-    date: "2023-12-15",
-    readTime: "11 min",
-    tags: ["Database", "PostgreSQL", "Performance"],
-    image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&h=600&fit=crop",
-    featured: false,
-  },
-];
+
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString("en-US", {
@@ -70,9 +16,45 @@ const formatDate = (dateString: string) => {
   });
 };
 
+const generatePlaceholderImage = (title: string) => {
+  // Generate a consistent placeholder image based on the title
+  const titleHash = title.split('').reduce((acc, char) => {
+    return char.charCodeAt(0) + ((acc << 5) - acc);
+  }, 0);
+  
+  const colors = [
+    '6366f1', '8b5cf6', 'ec4899', 'f43f5e', 'f59e0b',
+    '10b981', '06b6d4', '3b82f6', '8b5cf6', 'ec4899'
+  ];
+  
+  const color = colors[Math.abs(titleHash) % colors.length];
+  return `https://placehold.co/800x600/${color}/white?text=${encodeURIComponent(title.substring(0, 20))}`;
+};
+
 const Articles = () => {
-  const featuredArticle = articles.find((a) => a.featured);
-  const regularArticles = articles.filter((a) => a.id !== featuredArticle?.id);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        setLoading(true);
+        const response = await articleApi.getPublishedArticles();
+        setArticles(response.articles);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load articles');
+        console.error('Error fetching articles:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchArticles();
+  }, []);
+  
+  const featuredArticle = articles.find((a) => a.status === 'published');
+  const regularArticles = articles.filter((a) => a._id !== featuredArticle?._id && a.status === 'published');
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,25 +94,18 @@ const Articles = () => {
                 className="group rounded-2xl overflow-hidden glass hover-lift"
               >
                 <div className="grid md:grid-cols-2 gap-0">
-                  <div className="relative aspect-video md:aspect-auto overflow-hidden">
+                  <div className="relative aspect-video md:aspect-auto overflow-hidden bg-muted/20 flex items-center justify-center">
                     <img
-                      src={featuredArticle.image}
+                      src={generatePlaceholderImage(featuredArticle.title)}
                       alt={featuredArticle.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <span className="absolute top-4 left-4 px-3 py-1 text-sm font-medium bg-primary text-primary-foreground rounded-full">
-                      Featured
-                    </span>
                   </div>
                   <div className="p-8 md:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {formatDate(featuredArticle.date)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {featuredArticle.readTime}
+                        {formatDate(featuredArticle.createdAt)}
                       </span>
                     </div>
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-primary transition-colors">
@@ -170,16 +145,16 @@ const Articles = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {regularArticles.map((article, index) => (
                 <motion.article
-                  key={article.id}
+                  key={article._id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="group rounded-xl overflow-hidden glass hover-lift"
                 >
-                  <div className="relative aspect-video overflow-hidden">
+                  <div className="relative aspect-video overflow-hidden bg-muted/20 flex items-center justify-center">
                     <img
-                      src={article.image}
+                      src={generatePlaceholderImage(article.title)}
                       alt={article.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
@@ -188,11 +163,7 @@ const Articles = () => {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        {formatDate(article.date)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {article.readTime}
+                        {formatDate(article.createdAt)}
                       </span>
                     </div>
                     <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors line-clamp-2">

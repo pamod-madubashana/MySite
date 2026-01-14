@@ -1,109 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Star, GitFork, ExternalLink, Github, Filter, Search } from "lucide-react";
+import { Star, GitFork, ExternalLink, Github, Filter, Search, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const allProjects = [
-  {
-    id: 1,
-    name: "E-Commerce Platform",
-    description: "A full-featured e-commerce solution with real-time inventory, payment processing, and admin dashboard. Built with a focus on performance and scalability.",
-    language: "TypeScript",
-    stars: 128,
-    forks: 34,
-    topics: ["React", "Node.js", "PostgreSQL", "Stripe"],
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
-    id: 2,
-    name: "AI Content Generator",
-    description: "GPT-powered content generation tool with custom fine-tuning capabilities and multi-language support. Includes a beautiful dashboard for analytics.",
-    language: "Python",
-    stars: 256,
-    forks: 67,
-    topics: ["FastAPI", "OpenAI", "React", "Redis"],
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
-    id: 3,
-    name: "Real-time Collaboration",
-    description: "Figma-like collaborative canvas with real-time sync, cursors, and version history. Uses CRDTs for conflict-free editing.",
-    language: "TypeScript",
-    stars: 89,
-    forks: 21,
-    topics: ["WebSocket", "Canvas", "CRDT", "Yjs"],
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: true,
-  },
-  {
-    id: 4,
-    name: "DevOps Dashboard",
-    description: "Kubernetes cluster monitoring with real-time metrics, alerting, and deployment automation. Integrates with major cloud providers.",
-    language: "Go",
-    stars: 145,
-    forks: 38,
-    topics: ["Kubernetes", "Prometheus", "Grafana", "React"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: 5,
-    name: "Social Media Analytics",
-    description: "Comprehensive analytics platform for social media managers. Track engagement, schedule posts, and generate reports.",
-    language: "TypeScript",
-    stars: 72,
-    forks: 15,
-    topics: ["Next.js", "Chart.js", "Twitter API", "Meta API"],
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-  {
-    id: 6,
-    name: "IoT Home Automation",
-    description: "Smart home control system with voice commands, scheduling, and energy monitoring. Works with major IoT protocols.",
-    language: "Python",
-    stars: 98,
-    forks: 28,
-    topics: ["Raspberry Pi", "MQTT", "React Native", "TensorFlow"],
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
-    liveUrl: "#",
-    githubUrl: "#",
-    featured: false,
-  },
-];
-
-const languages = ["All", "TypeScript", "Python", "Go", "JavaScript"];
+import { githubApi } from "@/api/githubApi";
+import { useSettings } from "@/contexts/SettingsContext";
 
 const languageColors: Record<string, string> = {
   TypeScript: "bg-blue-500",
   Python: "bg-yellow-500",
   JavaScript: "bg-amber-500",
   Go: "bg-cyan-500",
+  Rust: "bg-orange-500",
+  Java: "bg-red-500",
+  C: "bg-gray-500",
+  "C++": "bg-gray-700",
+  "C#": "bg-purple-500",
 };
+
+const languages = ["All", "TypeScript", "Python", "Go", "JavaScript"];
 
 const Projects = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [githubRepos, setGithubRepos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredProjects = allProjects.filter((project) => {
-    const matchesLanguage = selectedLanguage === "All" || project.language === selectedLanguage;
-    const matchesSearch = project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      project.topics.some(topic => topic.toLowerCase().includes(searchQuery.toLowerCase()));
+  const { settings, loading: settingsLoading } = useSettings();
+  
+  useEffect(() => {
+    const fetchGithubRepos = async () => {
+      try {
+        // Use the GitHub username from settings if available, otherwise use a default
+        const githubUsername = settings?.socialLinks.github?.split('/').pop() || 'octocat';
+        const repos = await githubApi.getRepos(githubUsername);
+        setGithubRepos(repos);
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch GitHub repositories');
+        console.error('Error fetching GitHub repos:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGithubRepos();
+  }, [settings]);
+
+  const filteredProjects = githubRepos.filter((repo) => {
+    const matchesLanguage = selectedLanguage === "All" || repo.language === selectedLanguage;
+    const matchesSearch = repo.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      repo.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      repo.topics?.some((topic: string) => topic.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesLanguage && matchesSearch;
   });
 
@@ -188,35 +137,20 @@ const Projects = () => {
                 transition={{ duration: 0.3 }}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
-                {filteredProjects.map((project, index) => (
+                {filteredProjects.map((repo, index) => (
                   <motion.article
-                    key={project.id}
+                    key={repo.id || repo.fullName}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="group rounded-xl overflow-hidden glass hover-lift"
                   >
-                    {/* Image */}
-                    <div className="relative aspect-video overflow-hidden">
-                      {project.featured && (
-                        <span className="absolute top-3 left-3 z-10 px-2 py-1 text-xs font-medium bg-primary text-primary-foreground rounded-full">
-                          Featured
-                        </span>
-                      )}
-                      <img
-                        src={project.image}
-                        alt={project.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
+                    {/* Content - using a placeholder image for now */}
+                    <div className="relative aspect-video overflow-hidden bg-muted/20 flex items-center justify-center">
+                      <Github className="w-16 h-16 text-muted-foreground/30" />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4 gap-2">
-                        <Button size="sm" variant="secondary" className="gap-1" asChild>
-                          <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="w-4 h-4" />
-                            Live
-                          </a>
-                        </Button>
                         <Button size="sm" variant="outline" className="gap-1" asChild>
-                          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <a href={repo.htmlUrl} target="_blank" rel="noopener noreferrer">
                             <Github className="w-4 h-4" />
                             Code
                           </a>
@@ -227,23 +161,23 @@ const Projects = () => {
                     {/* Content */}
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-3">
-                        <span className={`w-3 h-3 rounded-full ${languageColors[project.language] || "bg-muted"}`} />
+                        <span className={`w-3 h-3 rounded-full ${languageColors[repo.language] || "bg-muted"}`} />
                         <span className="text-xs font-mono text-muted-foreground">
-                          {project.language}
+                          {repo.language}
                         </span>
                       </div>
 
                       <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                        {project.name}
+                        {repo.name}
                       </h3>
 
                       <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                        {project.description}
+                        {repo.description || 'No description provided'}
                       </p>
 
                       {/* Topics */}
                       <div className="flex flex-wrap gap-2 mb-4">
-                        {project.topics.slice(0, 3).map((topic) => (
+                        {repo.topics?.slice(0, 3).map((topic: string) => (
                           <span
                             key={topic}
                             className="px-2 py-1 text-xs font-mono bg-muted/50 rounded-md"
@@ -251,9 +185,9 @@ const Projects = () => {
                             {topic}
                           </span>
                         ))}
-                        {project.topics.length > 3 && (
+                        {repo.topics && repo.topics.length > 3 && (
                           <span className="px-2 py-1 text-xs text-muted-foreground">
-                            +{project.topics.length - 3}
+                            +{repo.topics.length - 3}
                           </span>
                         )}
                       </div>
@@ -262,11 +196,11 @@ const Projects = () => {
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Star className="w-4 h-4" />
-                          {project.stars}
+                          {repo.stargazersCount}
                         </span>
                         <span className="flex items-center gap-1">
                           <GitFork className="w-4 h-4" />
-                          {project.forks}
+                          {repo.forksCount}
                         </span>
                       </div>
                     </div>
@@ -274,15 +208,37 @@ const Projects = () => {
                 ))}
               </motion.div>
             </AnimatePresence>
-
-            {filteredProjects.length === 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-center py-20"
-              >
-                <p className="text-muted-foreground">No projects found matching your criteria.</p>
-              </motion.div>
+            {(loading || error || (filteredProjects.length === 0 && githubRepos.length > 0)) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {loading ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="col-span-3 text-center py-20"
+                  >
+                    <div className="flex justify-center">
+                      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    </div>
+                    <p className="text-muted-foreground mt-4">Loading projects from GitHub...</p>
+                  </motion.div>
+                ) : error ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="col-span-3 text-center py-20"
+                  >
+                    <p className="text-destructive">Error: {error}</p>
+                  </motion.div>
+                ) : filteredProjects.length === 0 && githubRepos.length > 0 ? (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="col-span-3 text-center py-20"
+                  >
+                    <p className="text-muted-foreground">No projects found matching your criteria.</p>
+                  </motion.div>
+                ) : null}
+              </div>
             )}
           </div>
         </section>
