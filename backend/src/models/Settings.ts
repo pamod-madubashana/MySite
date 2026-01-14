@@ -20,6 +20,7 @@ export interface ISettings extends Document {
     twitter?: string
     email?: string
   }
+  githubUsername?: string
   updatedAt: Date
 }
 
@@ -69,6 +70,10 @@ const settingsSchema = new Schema<ISettings>({
     linkedin: String,
     twitter: String,
     email: String
+  },
+  githubUsername: {
+    type: String,
+    default: process.env.GITHUB_USERNAME || ''
   }
 }, {
   timestamps: true

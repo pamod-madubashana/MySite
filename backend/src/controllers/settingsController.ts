@@ -84,6 +84,11 @@ export const updateSettings = [
     .isString()
     .withMessage('Email link must be a string'),
   
+  body('githubUsername')
+    .optional()
+    .isString()
+    .withMessage('GitHub username must be a string'),
+  
   async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);

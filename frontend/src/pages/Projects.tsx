@@ -39,9 +39,9 @@ const Projects = () => {
         if (settings?.socialLinks.github) {
           githubUsername = settings.socialLinks.github.split('/').pop() || githubUsername;
         }
-        // Fallback to environment variable if settings don't have it
-        else if (import.meta.env.VITE_GITHUB_USERNAME) {
-          githubUsername = import.meta.env.VITE_GITHUB_USERNAME;
+        // Fallback to default if settings don't have it
+        else {
+          githubUsername = 'octocat';
         }
         
         const repos = await githubApi.getRepos(githubUsername);
