@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/pamod-madubashana/Myportfolio-Frontend
+[submodule "backend"]
+	path = backend
+	url = https://github.com/pamod-madubashana/Myportfolio-Backend
