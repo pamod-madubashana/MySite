@@ -55,20 +55,27 @@ npm install
 
 #### Backend Configuration
 
-Create `.env` file in the `backend` directory:
+For local development, create `.env` file in the `backend` directory:
 
 ```env
 # Database
 MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/portfolio?retryWrites=true&w=majority
 
 # JWT Secret
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-development
 
 # Port
 PORT=5000
 
-# Frontend URL
-FRONTEND_URL=http://localhost:8080
+# Environment identifier
+NODE_ENV=development
+
+# Frontend URLs for development
+FRONTEND_URL_DEV=http://localhost:3000
+FRONTEND_URL_PROD=https://pamod.is-a.dev
+
+# Combined CORS origins for development
+CORS_ORIGINS=http://localhost:3000,http://localhost:8080
 
 # GitHub Username (for fetching repositories)
 GITHUB_USERNAME=your-github-username
@@ -76,6 +83,17 @@ GITHUB_USERNAME=your-github-username
 # GitHub API Token (optional - for enhanced GitHub integration)
 GITHUB_TOKEN=your_github_token
 ```
+
+For production deployment (e.g., Koyeb), configure these environment variables directly in the platform instead of using a committed .env file:
+
+- `MONGODB_URI`: Your production database connection string
+- `JWT_SECRET`: A strong secret for JWT tokens
+- `NODE_ENV`: Set to 'production'
+- `CORS_ORIGINS`: Comma-separated list of allowed origins (e.g., 'https://yoursite.com,https://www.yoursite.com')
+- `FRONTEND_URL_PROD`: Your production frontend URL
+- `GITHUB_USERNAME`: Your GitHub username for repository fetching
+
+**Security Note:** Never commit sensitive environment variables to version control. Always configure production secrets through your hosting platform's environment variable settings. The .env.development and .env.production files should only be used for non-sensitive configuration or during local development.
 
 #### Frontend Configuration
 
