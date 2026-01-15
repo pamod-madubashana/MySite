@@ -128,15 +128,10 @@ cd backend && npm start
 
 ## 🔐 Admin Panel Access
 
-1. Register an account through the `/register` endpoint
-2. Update the user's role to `admin` in the database directly:
-   ```javascript
-   db.users.updateOne(
-     { email: "your-email@example.com" },
-     { $set: { role: "admin" } }
-   )
-   ```
-3. Access the admin panel at `/admin`
+1. Only users with the email address specified in the `ADMIN_EMAIL` environment variable can access the admin panel
+2. During registration, accounts with the admin email will automatically receive admin privileges
+3. Other registered users will have standard user privileges
+4. Access the admin panel at `/admin`
 
 ## 📦 API Endpoints
 
