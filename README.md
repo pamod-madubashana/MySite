@@ -12,7 +12,7 @@ Full-stack developer passionate about creating modern web applications with clea
 ## 📫 Contact
 
 - **Email**: [pamod.main@gmail.com](mailto:pamod.main@gmail.com)
-- **GitHub**: [@pamod-madubashana](https://github.com/pamod-madubashana)
+- **GitHub**: [pamod-madubashana](https://github.com/pamod-madubashana)
 - **LinkedIn**: [pamod-madubashana](https://www.linkedin.com/in/pamod-madubashana-886b621a2)
 - **Website**: [pamod.is-a.dev](https://pamod.is-a.dev)
 
