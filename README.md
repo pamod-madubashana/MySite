@@ -1,205 +1,34 @@
-# Personal Portfolio Platform
+# Pamod Madhusanka
 
-A futuristic personal portfolio platform with React frontend and Express backend featuring an admin panel for content management. Built with clean architecture and designed for easy deployment.
+Full-stack developer passionate about creating modern web applications with clean code and exceptional user experiences.
 
-## 🚀 Features
+## 🛠️ Skills
 
-- **Modern UI**: Futuristic, responsive design with smooth animations
-- **Admin Panel**: Secure content management system
-- **Blog System**: Article publishing with drafts and publishing controls
-- **Project Showcase**: Portfolio project management with featured options
-- **Dynamic Settings**: Configurable site settings and appearance
-- **GitHub Integration**: Automatic fetching of GitHub repositories
-- **Dark Mode**: Default dark theme with smooth transitions
-- **SEO Optimized**: Proper meta tags and structured data
+- **Frontend**: React, TypeScript, Next.js, Tailwind CSS, Framer Motion
+- **Backend**: Node.js, Express, MongoDB, PostgreSQL
+- **Tools**: Git, Docker, AWS, Vercel, GitHub Actions
+- **Languages**: JavaScript, TypeScript, Python, Go
 
-## 🛠️ Tech Stack
+## 📫 Contact
 
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Radix UI, Framer Motion
-- **Backend**: Express.js, TypeScript, MongoDB with Mongoose
-- **Authentication**: JWT-based authentication with role-based access
-- **Deployment**: GitHub Pages (frontend), Render/Railway (backend)
+- **Email**: [pamod.main@gmail.com](mailto:pamod.main@gmail.com)
+- **GitHub**: [@pamod-madubashana](https://github.com/pamod-madubashana)
+- **LinkedIn**: [pamod-madubashana](https://www.linkedin.com/in/pamod-madubashana-886b621a2)
+- **Website**: [pamod.is-a.dev](https://pamod.is-a.dev)
 
-## 📋 Prerequisites
+## 🌟 Projects
 
-- Node.js (v18 or higher)
-- MongoDB (local instance or Atlas)
-- Git
+Check out my latest work on [pamod.is-a.dev/projects](https://pamod.is-a.dev/projects)
 
-## 🚀 Quick Start
 
-### 1. Clone the Repository
 
-```bash
-git clone https://github.com/yourusername/mySite.git
-cd mySite
-```
 
-### 2. Install Dependencies
 
-```bash
-# Install backend dependencies
-cd backend
-npm install
 
-# Install frontend dependencies
-cd ../frontend
-npm install
 
-# Or install both at root level
-cd ..
-npm install
-```
 
-### 3. Configure Environment Variables
 
-#### Backend Configuration
 
-For local development, create `.env` file in the `backend` directory:
 
-```env
-# Database
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/portfolio?retryWrites=true&w=majority
 
-# JWT Secret
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-development
 
-# Port
-PORT=5000
-
-# Environment identifier
-NODE_ENV=development
-
-# Frontend URLs for development
-FRONTEND_URL_DEV=http://localhost:3000
-FRONTEND_URL_PROD=https://pamod.is-a.dev
-
-# Combined CORS origins for development
-CORS_ORIGINS=http://localhost:3000,http://localhost:8080
-
-# GitHub Username (for fetching repositories)
-GITHUB_USERNAME=your-github-username
-
-# GitHub API Token (optional - for enhanced GitHub integration)
-GITHUB_TOKEN=your_github_token
-```
-
-For production deployment (e.g., Koyeb), configure these environment variables directly in the platform instead of using a committed .env file:
-
-- `MONGODB_URI`: Your production database connection string
-- `JWT_SECRET`: A strong secret for JWT tokens
-- `NODE_ENV`: Set to 'production'
-- `CORS_ORIGINS`: Comma-separated list of allowed origins (e.g., 'https://yoursite.com,https://www.yoursite.com')
-- `FRONTEND_URL_PROD`: Your production frontend URL
-- `GITHUB_USERNAME`: Your GitHub username for repository fetching
-
-**Security Note:** Never commit sensitive environment variables to version control. Always configure production secrets through your hosting platform's environment variable settings. The .env.development and .env.production files should only be used for non-sensitive configuration or during local development.
-
-#### Frontend Configuration
-
-Create `.env` file in the `frontend` directory:
-
-```env
-VITE_API_BASE_URL=http://localhost:5000/api
-```
-
-### 4. Run the Application
-
-#### Development Mode
-
-```bash
-# From the root directory
-npm run dev
-
-# Or separately
-cd backend && npm run dev
-cd frontend && npm run dev
-```
-
-#### Production Mode
-
-```bash
-# Build frontend
-cd frontend && npm run build
-
-# Start backend
-cd backend && npm start
-```
-
-## 🔐 Admin Panel Access
-
-1. Only users with the email address specified in the `ADMIN_EMAIL` environment variable can access the admin panel
-2. During registration, accounts with the admin email will automatically receive admin privileges
-3. Other registered users will have standard user privileges
-4. Access the admin panel at `/admin`
-
-## 📦 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
-
-### Articles
-- `GET /api/articles` - Get published articles
-- `GET /api/articles/:id` - Get specific article
-- `GET /api/articles/all` - Get all articles (admin only)
-- `POST /api/articles` - Create article (admin only)
-- `PUT /api/articles/:id` - Update article (admin only)
-- `DELETE /api/articles/:id` - Delete article (admin only)
-
-### Projects
-- `GET /api/projects` - Get published projects
-- `GET /api/projects/:id` - Get specific project
-- `GET /api/projects/all` - Get all projects (admin only)
-- `POST /api/projects` - Create project (admin only)
-- `PUT /api/projects/:id` - Update project (admin only)
-- `DELETE /api/projects/:id` - Delete project (admin only)
-
-### Settings
-- `GET /api/settings` - Get site settings
-- `PUT /api/settings` - Update site settings (admin only)
-
-## 🚢 Deployment
-
-### Frontend to GitHub Pages
-
-1. Update `base` in `frontend/vite.config.ts` to match your repository name
-2. Push to main branch
-3. GitHub Actions workflow will automatically deploy to GitHub Pages
-
-### Backend to Render/Railway
-
-1. Create an account on Render or Railway
-2. Connect your GitHub repository
-3. Set environment variables in the platform dashboard
-4. Deploy the backend service
-
-### Manual Deployment
-
-For Render, add this to your `backend/package.json`:
-
-```json
-{
-  "scripts": {
-    "start": "node dist/index.js",
-    "heroku-postbuild": "echo 'Build completed'"
-  }
-}
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 💬 Support
-
-If you encounter any issues or have questions, please open an issue in the repository.
