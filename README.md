@@ -1,4 +1,4 @@
-# Pamod Madhusanka
+# Pamod Madubashana
 
 Full-stack developer passionate about creating modern web applications with clean code and exceptional user experiences.
 
