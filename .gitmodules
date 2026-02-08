@@ -4,3 +4,6 @@
 [submodule "portfolio"]
 	path = portfolio
 	url = https://github.com/pamod-madubashana/portfolio-source-code
+[submodule "server"]
+	path = server
+	url = https://github.com/pamod-madubashana/MySite-Backend
