@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run dev:personalSite\" \"npm run dev:server\"",
+    "devp": "concurrently \"npm run dev:portfolio\" \"npm run dev:server\"",
     "dev:personalSite": "cd personalSite && npm run dev",
     "dev:server": "cd Server && npm run dev",
     "dev:frontend": "npm run dev:personalSite",

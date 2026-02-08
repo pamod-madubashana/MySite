@@ -6,4 +6,4 @@
 	url = https://github.com/pamod-madubashana/MySite-Frontend
 [submodule "portfolio"]
 	path = portfolio
-	url = https://github.com/pamod-madubashana/portfolio-source-code.git
+	url = https://github.com/pamod-madubashana/portfolio-source-code
