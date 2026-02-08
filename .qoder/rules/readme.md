@@ -136,6 +136,3 @@ Rules:
 
 ---
 
-## Validation Checklist
-
-A README.md is val

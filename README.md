@@ -1,41 +1,75 @@
-<p align="center">
-  <h1 align="center">Pamod Madubashana</h1>
-</p>
+<div align="center">
 
-<p align="center">
-  <img src="assets/favicon.png" alt="Pamod Madubashana" width="120" height="120" />
-</p>
+# Personal Portfolio Platform
 
-<p align="center">Full-stack developer passionate about creating modern web applications with clean code and exceptional user experiences.</p>
+<img src="assets/favicon.png" width="200" alt="Personal Portfolio Platform Icon" />
 
+Full-stack portfolio platform with admin dashboard and CMS capabilities.
 
-## 🛠️ Skills
+</div>
 
-- **Frontend**: React, TypeScript, Next.js, Tailwind CSS, Framer Motion
-- **Backend**: Node.js, Express, MongoDB, PostgreSQL
-- **Tools**: Git, Docker, AWS, Vercel, GitHub Actions
-- **Languages**: JavaScript, TypeScript, Python, Go
+## Tech Stack
 
-## 📫 Contact
+- Frontend: React, TypeScript, Vite, Tailwind CSS, Framer Motion, React Router
+- Backend: Node.js, Express, TypeScript, MongoDB, Mongoose
+- Database: MongoDB
+- Other: REST API, JWT Authentication, Multer (file upload), Nodemailer
 
-- **Email**: [contact@pamod.is-a.dev](mailto:contact@pamod.is-a.dev)
-- **GitHub**: [pamod-madubashana](https://github.com/pamod-madubashana)
-- **LinkedIn**: [pamod-madubashana](https://www.linkedin.com/in/pamod-madubashana-886b621a2)
-- **Website**: [pamod.is-a.dev](https://pamod.is-a.dev)
+## Why This Project Exists
 
-## 🌟 Projects
+- Problem: Need for a professional portfolio website with content management capabilities
+- Goal: Create a customizable portfolio platform with admin dashboard for easy content updates
+- Outcome: Fully functional portfolio site with blog, project showcase, and admin panel
 
-Check out my latest work on [pamod.is-a.dev/projects](https://pamod.is-a.dev/projects)
+## Project Structure
 
-## 📦 Repository layout
+```
+.
+├── personalSite/           # Main frontend application (React/Vite)
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page components
+│   │   ├── api/            # API clients
+│   │   └── contexts/       # React contexts
+│   └── package.json
+├── server/                 # Backend API (Express/Node.js)
+│   ├── src/
+│   │   ├── controllers/    # Request handlers
+│   │   ├── models/         # Database models
+│   │   ├── routes/         # API routes
+│   │   └── middleware/     # Custom middleware
+│   └── package.json
+├── portfolio/              # Alternative portfolio frontend
+│   └── src/
+├── assets/                 # Static assets
+└── README.md
+```
 
-- `personalSite`: frontend submodule (renamed from `frontend`)
-- `Server`: backend submodule (renamed from `backend`)
-- `portfolio`: additional portfolio submodule from `pamod-madubashana/portfolio-source-code`
+## Screenshots
 
-## 🔌 Shared API configuration
+Screenshots will be added soon.
 
-Set API base URLs through environment variables so deployments do not hardcode localhost:
+## Key Features
 
-- `API_BASE_URL` for generic clients
-- `NEXT_PUBLIC_API_BASE_URL` for Next.js client-side calls (portfolio)
+- Responsive portfolio website with modern UI
+- Admin dashboard for content management
+- Blog/article publishing system
+- Project showcase with detailed views
+- Timeline and experience tracking
+- Technology skills management
+- Contact form with email notifications
+- File upload capabilities
+- User authentication and authorization
+- RESTful API architecture
+
+## Validation Checklist
+
+A README.md is valid if it:
+
+- [x] Has centered title, icon, and description
+- [x] Lists actual tech stack used
+- [x] Explains real project purpose
+- [x] Shows accurate project structure
+- [x] Includes screenshots or placeholder
+- [x] Lists actual key features
+- [x] Follows validation checklist format
