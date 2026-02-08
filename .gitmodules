@@ -1,6 +1,3 @@
-[submodule "server"]
-	path = server
-	url = https://github.com/pamod-madubashana/MySite-Backend
 [submodule "personalSite"]
 	path = personalSite
 	url = https://github.com/pamod-madubashana/MySite-Frontend
