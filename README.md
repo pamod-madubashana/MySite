@@ -26,3 +26,16 @@
 ## 🌟 Projects
 
 Check out my latest work on [pamod.is-a.dev/projects](https://pamod.is-a.dev/projects)
+
+## 📦 Repository layout
+
+- `personalSite`: frontend submodule (renamed from `frontend`)
+- `Server`: backend submodule (renamed from `backend`)
+- `portfolio`: additional portfolio submodule from `pamod-madubashana/portfolio-source-code`
+
+## 🔌 Shared API configuration
+
+Set API base URLs through environment variables so deployments do not hardcode localhost:
+
+- `API_BASE_URL` for generic clients
+- `NEXT_PUBLIC_API_BASE_URL` for Next.js client-side calls (portfolio)

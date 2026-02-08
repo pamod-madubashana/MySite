@@ -1,6 +1,9 @@
-[submodule "backend"]
-	path = backend
+[submodule "Server"]
+	path = Server
 	url = https://github.com/pamod-madubashana/MySite-Backend
-[submodule "frontend"]
-	path = frontend
+[submodule "personalSite"]
+	path = personalSite
 	url = https://github.com/pamod-madubashana/MySite-Frontend
+[submodule "portfolio"]
+	path = portfolio
+	url = https://github.com/pamod-madubashana/portfolio-source-code.git

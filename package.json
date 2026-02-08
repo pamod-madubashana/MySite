@@ -1,14 +1,18 @@
 {
   "name": "personal-portfolio-platform",
   "version": "1.0.0",
-  "description": "Futuristic personal portfolio platform with React frontend and Express backend",
+  "description": "Personal portfolio platform with personalSite, Server, and portfolio submodules",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-    "dev:frontend": "cd frontend && npm run dev",
-    "dev:backend": "cd backend && npm run dev",
-    "build": "cd frontend && npm run build",
-    "start": "cd backend && npm start"
+    "dev": "concurrently \"npm run dev:personalSite\" \"npm run dev:server\"",
+    "dev:personalSite": "cd personalSite && npm run dev",
+    "dev:server": "cd Server && npm run dev",
+    "dev:frontend": "npm run dev:personalSite",
+    "dev:backend": "npm run dev:server",
+    "dev:portfolio": "cd portfolio && npm run dev",
+    "build": "cd personalSite && npm run build",
+    "build:portfolio": "cd portfolio && npm run build",
+    "start": "cd Server && npm start"
   },
   "keywords": [
     "portfolio",
