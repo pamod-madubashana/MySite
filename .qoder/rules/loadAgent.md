@@ -7,3 +7,4 @@ Instructions:
 - Load and follow `AGENTS.md` in the repository root.
 - Treat `AGENTS.md` as the source of truth.
 - If there is any conflict, `AGENTS.md` overrides this file.
+- always sync `codex.md` in agent folder with `AGENTS.md` file.
