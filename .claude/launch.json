@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "personalSite",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:personalSite"],
+      "port": 3000
+    },
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:portfolio"],
+      "port": 4000
+    },
+    {
+      "name": "server",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:server"],
+      "port": 5000
+    }
+  ]
+}
