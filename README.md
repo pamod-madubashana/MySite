@@ -25,22 +25,20 @@ Full-stack portfolio platform with admin dashboard and CMS capabilities.
 
 ```
 .
-├── personalSite/           # Main frontend application (React/Vite)
+├── Frontend/               # Main frontend application (React/Vite)
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
 │   │   ├── pages/          # Page components
 │   │   ├── api/            # API clients
 │   │   └── contexts/       # React contexts
 │   └── package.json
-├── server/                 # Backend API (Express/Node.js)
+├── Backend/                # Backend API (Express/Node.js)
 │   ├── src/
 │   │   ├── controllers/    # Request handlers
 │   │   ├── models/         # Database models
 │   │   ├── routes/         # API routes
 │   │   └── middleware/     # Custom middleware
 │   └── package.json
-├── portfolio/              # Alternative portfolio frontend
-│   └── src/
 ├── assets/                 # Static assets
 └── README.md
 ```

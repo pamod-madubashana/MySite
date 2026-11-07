@@ -1,19 +1,14 @@
 {
   "name": "personal-portfolio-platform",
   "version": "1.0.0",
-  "description": "Personal portfolio platform with personalSite, Server, and portfolio submodules",
+  "description": "Personal portfolio platform with Frontend and Backend submodules",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:personalSite\" \"npm run dev:server\"",
-    "devp": "concurrently \"npm run dev:portfolio\" \"npm run dev:server\"",
-    "dev:personalSite": "cd personalSite && npm run dev",
-    "dev:server": "cd Server && npm run dev",
-    "dev:frontend": "npm run dev:personalSite",
-    "dev:backend": "npm run dev:server",
-    "dev:portfolio": "cd portfolio && npm run dev",
-    "build": "cd personalSite && npm run build",
-    "build:portfolio": "cd portfolio && npm run build",
-    "start": "cd Server && npm start"
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "cd Frontend && npm run dev",
+    "dev:backend": "cd Backend && npm run dev",
+    "build": "cd Frontend && npm run build",
+    "start": "cd Backend && npm start"
   },
   "keywords": [
     "portfolio",

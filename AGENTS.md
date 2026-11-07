@@ -1,23 +1,19 @@
 # AGENTS.md
 
-This file is guidance for coding agents working in `D:\User\Documents\Repositories\Web\MySite`.
+This file is guidance for coding agents working in `E:\User\Documents\Repositories\MySite`.
 
 ## 1) Repository Overview
 
 - Monorepo-style workspace with multiple apps:
-  - `personalSite/` -> main React + TypeScript frontend (Vite, Tailwind, shadcn/ui)
-  - `server/` -> Express + TypeScript API
-  - `portfolio/` -> secondary frontend (also Vite)
+  - `Frontend/` -> main React + TypeScript frontend (Vite, Tailwind, shadcn/ui)
+  - `Backend/` -> Express + TypeScript API
   - root `package.json` -> convenience scripts for multi-app workflows
 - Prefer making changes in the app that the user requested; do not cross-edit apps unless necessary.
 
-## 2) Cursor/Copilot/Qoder Rules
+## 2) Editor/Assistant Rules
 
 - This `AGENTS.md` file is the source of truth for repository instructions.
-- Qoder compatibility:
-  - Keep a root `agent.md` compatibility entrypoint.
-  - `agent.md` should direct agents to load and follow this `AGENTS.md` file.
-  - If any instruction differs between files, `AGENTS.md` wins.
+- If any instruction differs between other agent files, `AGENTS.md` wins.
 - Checked for additional editor/assistant rule files:
   - `.cursorrules`: not found
   - `.cursor/rules/`: not found
@@ -28,37 +24,27 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 ### Root-level commands (run from repository root)
 
 - Install root deps: `npm install`
-- Run frontend + backend (personalSite): `npm run dev`
-- Run portfolio + backend: `npm run devp`
+- Run frontend + backend: `npm run dev`
 - Build main frontend: `npm run build`
-- Build portfolio frontend: `npm run build:portfolio`
 - Start backend (compiled): `npm run start`
 
-### Main frontend (`personalSite/`)
+### Main frontend (`Frontend/`)
 
-- Install deps: `cd personalSite && npm install`
-- Dev server: `cd personalSite && npm run dev`
-- Production build + prerender: `cd personalSite && npm run build`
-- Build in dev mode: `cd personalSite && npm run build:dev`
-- Generate sitemap only: `cd personalSite && npm run seo:sitemap`
-- Preview build: `cd personalSite && npm run preview`
-- Lint: `cd personalSite && npm run lint`
+- Install deps: `cd Frontend && npm install`
+- Dev server: `cd Frontend && npm run dev`
+- Production build + prerender: `cd Frontend && npm run build`
+- Build in dev mode: `cd Frontend && npm run build:dev`
+- Generate sitemap only: `cd Frontend && npm run seo:sitemap`
+- Preview build: `cd Frontend && npm run preview`
+- Lint: `cd Frontend && npm run lint`
 
-### Backend (`server/`)
+### Backend (`Backend/`)
 
-- Install deps: `cd server && npm install`
-- Dev server: `cd server && npm run dev`
-- Compile TypeScript: `cd server && npm run build`
-- Start compiled server: `cd server && npm run start`
-- Lint: `cd server && npm run lint`
-
-### Secondary frontend (`portfolio/`)
-
-- Install deps: `cd portfolio && npm install`
-- Dev server: `cd portfolio && npm run dev`
-- Build: `cd portfolio && npm run build`
-- Preview: `cd portfolio && npm run preview`
-- Lint: `cd portfolio && npm run lint`
+- Install deps: `cd Backend && npm install`
+- Dev server: `cd Backend && npm run dev`
+- Compile TypeScript: `cd Backend && npm run build`
+- Start compiled server: `cd Backend && npm run start`
+- Lint: `cd Backend && npm run lint`
 
 ### Testing status (important)
 
@@ -69,8 +55,8 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 
 - Not currently possible because no test runner is configured.
 - Closest single-file quality check options:
-  - Frontend single file lint: `cd personalSite && npx eslint src/path/to/file.tsx`
-  - Backend single file lint: `cd server && npx eslint src/path/to/file.ts`
+  - Frontend single file lint: `cd Frontend && npx eslint src/path/to/file.tsx`
+  - Backend single file lint: `cd Backend && npx eslint src/path/to/file.ts`
 - If tests are introduced, add scripts to `package.json` and document exact single-test command here.
 
 ## 4) Code Style and Conventions
@@ -84,8 +70,8 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 
 ### Imports and module usage
 
-- In `personalSite`, prefer path alias imports using `@/` (configured in tsconfig + Vite).
-- In `server`, use relative imports (current pattern).
+- In `Frontend`, prefer path alias imports using `@/` (configured in tsconfig + Vite).
+- In `Backend`, use relative imports (current pattern).
 - Keep imports grouped and stable:
   1. external packages
   2. internal aliases/relative modules
@@ -111,14 +97,14 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 - Constants: `UPPER_SNAKE_CASE` for true constants.
 - API/cache keys should be descriptive and namespaced (`feature:subfeature`).
 
-### React/frontend patterns (`personalSite`)
+### React/frontend patterns (`Frontend`)
 
 - Use function components and hooks.
 - Keep side effects in `useEffect`/`useLayoutEffect`; clean up listeners/timers/animations.
 - Keep state minimal; derive filtered/computed values when possible.
 - For API calls, centralize logic in `src/api/*` modules rather than inline `fetch` in pages.
 
-### Backend patterns (`server`)
+### Backend patterns (`Backend`)
 
 - Validate request data (existing pattern: `express-validator`).
 - Use early returns for auth/validation failures.
@@ -134,7 +120,7 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 
 ### Caching and invalidation
 
-- Existing cache utility: `personalSite/src/lib/cache.ts` (`apiCache`, `cacheKeys`).
+- Existing cache utility: `Frontend/src/lib/cache.ts` (`apiCache`, `cacheKeys`).
 - Use cache for repeated reads in API modules.
 - After any create/update/delete, invalidate related cache keys/patterns.
 - Keep invalidation explicit and close to mutation functions.
@@ -157,6 +143,4 @@ This file is guidance for coding agents working in `D:\User\Documents\Repositori
 
 ## 6) Known Practical Notes
 
-- Root scripts use `Server` in some commands; the actual folder is `server`.
-- On case-sensitive environments this can break; running commands directly in `server/` is safer.
-- `personalSite` build includes prerender (`react-snap`), which may log network fetch warnings during static crawl.
+- `Frontend` build includes prerender (`react-snap`), which may log network fetch warnings during static crawl.
